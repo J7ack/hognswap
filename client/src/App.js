@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './components/nav';
-import RegistrationForm from './components/registration.jsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './components/nav.jsx';
 import './App.css';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Home from './pages/Home';
 
 function App() {
 
-  const [backendData, setBackendData] = useState([{}])
+  // const [backendData, setBackendData] = useState([{}]);
 
-  useEffect(() => {
-    fetch("/api").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackendData(data);
-      }
-    )
-  }, [])
+  // useEffect(() => {
+  //   fetch("/api")
+  //   .then(response => response.json())
+  //   .then(data => {
+  //       setBackendData(data);
+  //     });
+  // }, []);
   return (
-  <>
-    <Navbar />
-    <RegistrationForm />
-  </>
+  <div>
+    <nav>
+      <NavBar />
+    </nav>
+    <Routes>
+      <Route path="/about" element={<Settings />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/profile" element={<Profile />} />
+    </Routes>
+  </div>
   );
 }
 

@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
+import React from 'react'
 
-// itemCard() takes in an array of objects, and formats them into a card to be displayed and returned when needed
-
-function itemCard(children) {
-  return(
-    <div className='itemCard'>{ children }</div>
+function itemCard() {
+  return (
+    <div>
+      card
+    </div>
   )
 }
 
-export default itemCard;
+export default itemCard

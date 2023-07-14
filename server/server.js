@@ -10,10 +10,11 @@ const { db } = require('./db/conn');
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
+const itemRoutes = require('./routes/itemRoutes.js')
 
-// Use authRoutes as middleware
+// Pass any incoming requests with `/api` to `authRoutes` middleware
+app.use('/api', itemRoutes);
 app.use('/api', authRoutes);
-
 
 // Connect to Atlas Cluster
 db();

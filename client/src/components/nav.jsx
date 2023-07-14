@@ -1,20 +1,30 @@
 import React from "react";
+import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
  
-function nav() {
+function NavBar() {
   return (
     <div className="nav">
       <ul>
-        <li><a href='#'>
+        <li>
+          <NavLink exact to="/settings" activeClass="active">
             <FontAwesomeIcon icon={faCogs} />
-          </a>
+          </NavLink>
         </li>
-        <li><a href="#">Hog</a></li>
-        <li><a href="#">Profile</a></li>
+        <li>
+          <NavLink exact to="/" activeClass="active">
+            <FontAwesomeIcon icon={faHouse} />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink exact to="/profile" activeClass="active">
+            <FontAwesomeIcon icon={faUser} />
+          </NavLink>
+        </li>
       </ul>
     </div>
   );
 }
 
-export default nav;
+export default NavBar;

@@ -13,8 +13,9 @@ const userSchema = new mongoose.Schema({
   hash: {
     type: String,
     required: true,
-  },
-});
+  }, 
+  
+}, { collection: 'userInfo' });
 
 const User = mongoose.model('User', userSchema);
 

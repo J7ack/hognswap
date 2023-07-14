@@ -4,7 +4,6 @@ const User = require('../models/userModel');
 // Registration
 async function registerUser(req, res) {
   const { email, password } = req.body;
-  console.log("Register");
 
   try {
     // Check for duplicate user

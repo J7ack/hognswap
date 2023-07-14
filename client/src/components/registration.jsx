@@ -30,6 +30,14 @@ const RegistrationForm = () => {
     }
   };
 
+  const handleLike = () => {
+    console.log('Liked!');
+  }
+
+  const handleDislike = () => {
+    console.log('Disliked!');
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>
@@ -52,6 +60,10 @@ const RegistrationForm = () => {
         />
       </div>
       <button type="submit">Register</button>
+      <br></br>
+      <br></br>
+      <button onClick={handleLike}>Like</button>
+      <button onClick={handleDislike}>Dislike</button>
     </form>
   );
 };
