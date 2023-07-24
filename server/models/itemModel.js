@@ -19,6 +19,9 @@ const itemSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tag',
   }],
+  pictures: [{
+    type: String,
+  }]
 }, {collection: 'itemInfo'});
 
 const Item = mongoose.model('Item', itemSchema);

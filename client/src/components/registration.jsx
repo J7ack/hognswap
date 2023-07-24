@@ -39,32 +39,31 @@ const RegistrationForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button type="submit">Register</button>
-      <br></br>
-      <br></br>
-      <button onClick={handleLike}>Like</button>
-      <button onClick={handleDislike}>Dislike</button>
-    </form>
+    <div className="container">
+      <form className="form-group" onSubmit={handleSubmit}>
+        <h2>Register</h2>
+        <div>
+          <label className='form-label'htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            className='form-input'
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className='form-label' htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password" className='form-input' 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button type="submit" className='form-button' >Register</button>
+      </form>
+    </div>
   );
 };
 

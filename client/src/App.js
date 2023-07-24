@@ -5,18 +5,10 @@ import './App.css';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Home from './pages/Home';
+import LoginReg from './pages/LoginReg.js';
+import '../src/index.css'
 
 function App() {
-
-  // const [backendData, setBackendData] = useState([{}]);
-
-  // useEffect(() => {
-  //   fetch("/api")
-  //   .then(response => response.json())
-  //   .then(data => {
-  //       setBackendData(data);
-  //     });
-  // }, []);
   return (
   <div>
     <nav>
@@ -26,6 +18,7 @@ function App() {
       <Route path="/about" element={<Settings />} />
       <Route path="/" element={<Home />} />
       <Route path="/profile" element={<Profile />} />
+      < Route path="/login" element={<LoginReg />} />
     </Routes>
   </div>
   );

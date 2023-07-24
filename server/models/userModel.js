@@ -6,15 +6,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  salt: {
+  password: {
     type: String,
     required: true,
-  },
-  hash: {
-    type: String,
-    required: true,
-  }, 
-  
+  },  
 }, { collection: 'userInfo' });
 
 const User = mongoose.model('User', userSchema);

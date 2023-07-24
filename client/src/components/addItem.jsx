@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 const ItemForm = () => {
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('');
   const [condition, setCondition] = useState('');
   const [tags, setTags] = useState([]);
+  const [pictures, setPictures] = useState([]);
 
+  // Handlers
   const handleNameChange = (event) => {
     setItemName(event.target.value);
   };
@@ -20,7 +22,6 @@ const ItemForm = () => {
 
   const handleTagsChange = (event) => {
     const { value, checked } = event.target;
-
     if (checked) {
       setTags((prevTags) => [...prevTags, value]);
     } else {
@@ -28,16 +29,38 @@ const ItemForm = () => {
     }
   };
 
+  const handlePicturesChange = (event) => {
+    const selectedPictures = Array.from(event.target.files);
+    setPictures(selectedPictures);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const formData = new FormData();
+    formData.append('itemName', itemName);
+    formData.append('category', category);
+    formData.append('condition', condition);
+    formData.append('tags', JSON.stringify(tags));
+    pictures.forEach((picture, index) => {
+      formData.append('pictures', picture);
+  })
+
     try {
+      // Create the item object to send in the request body
+      const newItem = {
+        itemName,
+        category,
+        condition,
+        tags,
+        // Add pictures array directly to newItem
+        pictures: pictures.map((picture) => picture.name),
+      };
+
+      // Send the request to the server
       const response = await fetch('/api/hognswap/itemInfo', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ itemName, category, condition, tags }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -48,24 +71,16 @@ const ItemForm = () => {
         setCategory('');
         setCondition('');
         setTags([]);
-
+        setPictures([]);
       } else {
         console.error('Item submission failed');
       }
     } catch (error) {
       console.error('Error adding item: ', error);
     }
-
-    console.log('Item Name: ', itemName);
-    console.log('Category: ', category);
-    console.log('Condition: ', condition);
-    console.log('Tags: ', tags);
-
-    // Reset form
-    setItemName('');
-    setCategory('');
-    setCondition('');
   };
+
+
 
   return (
     <form onSubmit={handleSubmit}>
@@ -122,6 +137,11 @@ const ItemForm = () => {
         <span>Outside</span>
       </label>
       <br />
+      <label>
+        Pictures:
+        <input type="file" multiple onChange={handlePicturesChange} />
+      </label>
+      <br></br>
       <button type="submit">Submit</button>
     </form>
   );
