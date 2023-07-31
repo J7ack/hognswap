@@ -21,7 +21,8 @@ const itemSchema = new mongoose.Schema({
   }],
   pictures: [{
     type: String,
-  }]
+  }],
+  likes: { type: [String], default: [] },
 }, {collection: 'itemInfo'});
 
 const Item = mongoose.model('Item', itemSchema);

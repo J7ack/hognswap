@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },  
+  likedItems: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'Item',
+  }]
 }, { collection: 'userInfo' });
 
 const User = mongoose.model('User', userSchema);

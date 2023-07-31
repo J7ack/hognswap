@@ -38,11 +38,13 @@ async function registerUser(req, res) {
 // Login
 async function loginUser(req, res) {
   try{
+    // Grab email and pass from body of request
     const { email, password } = req.body;
 
     // Find user by email in DB
     const user = await User.findOne({ email });
 
+    // Check for a user email actually exists in DB
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -50,28 +52,39 @@ async function loginUser(req, res) {
     // Compare the provided password with the hashed pass in DB
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
+    // Return 401 status and msg of invalid creds
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
     // Generate a JWT
-    const token = jwt.sign({ userId: user._id, email: user.email }, 'your-secret-key', { 
-      expiresIn: '1h' 
+    const token = jwt.sign({ userId: user._id, email: user.email }, 'the_secret_key', { 
+      expiresIn: '100h' 
     });
 
-    // Set the token as an HTTP-only cookie
-    res.setHeader(
-      'Set-Cookie', 
-      cookie.serialize('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 3600, // expiration time 1 hour
-        path: '/',
-    }));
+    // Message for me debugging
+    console.log('Generated token:', token)
+
+    
+    const cookieOptions = {
+      httpOnly: false,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 3600 * 1000, // expiration time 1 hour
+      path: '/',
+    };
+    
+    res.cookie('token', token, cookieOptions);
+    
+
+    // COOKIE DUBUGGING
+    console.log('Cookie options: ', cookieOptions);
+
+    console.log('Cookies after storing the token: ', req.cookies);
 
     // Return a success response
-    res.json({ message: 'Login success!' })
+    res.json({ message: 'Login success!', token: token });
+
   } catch (error) {
     console.error('Error logging in user: ', error);
     res.status(500).json({ message: 'Login failed' });

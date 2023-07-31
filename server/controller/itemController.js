@@ -1,5 +1,7 @@
+const User = require('../models/userModel');
 const Item = require('../models/itemModel');
 const Tag = require('../models/tagModel');
+const getUserIdFromToken = require('../utils/getUserIdFromToken');
 
 // Function to handle tags and save them as a tagModel
 const handleTags = async (tags) => {
@@ -20,6 +22,16 @@ const handleTags = async (tags) => {
   console.log('Tag IDs: ', tagIds);
 
   return tagIds;
+}
+
+exports.getAllItems = async (req, res) => {
+  try {
+    const items = await Item.find({});
+    res.status(200).json({ items });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while trying to get the items' });
+  }
 }
 
 // Creating/Uploading an item
@@ -55,6 +67,13 @@ exports.addItem = async (req, res) => {
     // Handle tags and get tagIds
     const tagIds = await handleTags(tags);
 
+    // Extract token from cookies
+    const token = req.cookies.token;
+    console.log(token)
+
+    // Get user ID from token
+    const userId = getUserIdFromToken(token);
+
     // Create a new item with the extracted information
     const newItem = new Item({
       itemName,
@@ -62,6 +81,7 @@ exports.addItem = async (req, res) => {
       condition,
       tags: tagIds,
       pictures: pictures,
+      user: userId,
     });
 
     console.log('New Item: ', newItem);
@@ -84,5 +104,60 @@ exports.addItem = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while trying to submit the item' })
+  }
+}
+
+// Item 'liking'
+exports.likeItem = async (req, res) => {
+  try {
+    // Tests
+    console.log('Authorization header:', req.headers['authorization']);
+
+    
+    const { itemId } = req.body;
+
+    token = req.cookies.token;
+
+    console.log('Token:', token);
+
+    const userId = getUserIdFromToken(token);
+
+    console.log('User ID:', userId);
+
+    console.log(userId);
+
+    console.log('userId:', userId);
+
+    // Get the user from the database using the userId
+    const user = await User.findById(userId);
+
+    console.log('User:', user);
+
+    // Check for user
+    if (!user) {
+      return res.status(400).json({ error: 'User not found' });
+    }
+
+    // Find item in DB
+    const item = await Item.findById(itemId);
+
+    console.log('Item:', item);
+
+    // Return item not found
+    if (!item) {
+      return res.status(400).json({ error: 'Item not found' });
+    }
+
+    // Append user's email to 'likes' array
+    if (!item.likes.includes(user.email)) {
+      item.likes.push(user.email);
+      await item.save();
+    }
+
+    return res.status(200).json({ message: 'Item likes successfully' });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while trying to like the item' });
   }
 }

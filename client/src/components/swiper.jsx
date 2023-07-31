@@ -1,36 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TinderCard from 'react-tinder-card';
 
 const Swiper = () => {
   const [items, setItems] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const cardRefs = useRef({});
 
   useEffect(() => {
+    const tokenFromLocalStorage = localStorage.getItem('token');
+    setToken(tokenFromLocalStorage);
     fetchItems();
-  }, []);
+  }, [token]);
 
   const fetchItems = async () => {
+    console.log('Token from state: ', token);
+    if (!token) {
+      console.error('Token is not set in state');
+      return;
+    }
+
     try {
-      const images = require.context('../photos/', false, /\.(png|jpe?g|svg)$/)
-      const items = images.keys().map((path) => ({
-        id: path,
-        image: images(path).default,
-        title: '',
-        description: '',
+      const res = await fetch('/api/protected/hognswap/itemInfo',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token,
+          },
+          credentials: 'include',
+        }
+      );
+
+      if (res.status !== 200) {
+        console.error(`Error fetching items: received status ${res.status}`);
+        return;
+      }
+
+      const data = await res.json();
+
+      const newItems = data.items.map((item) => ({
+        id: item._id,
+        image: `data:image/png;base64,${item.pictures[0]}`,
+        title: item.itemName,
+        description: item.category,
       }));
-      setItems(items);
+
+      setItems([...newItems].reverse());
     } catch (error) {
       console.error('Error fetching items:', error);
     }
   };
 
   const onSwipe = (direction, item) => {
-    // Handle swipe action here
     console.log(`Swiped ${direction} on item:`, item);
+
+    if (direction === 'right') {
+      fetch('/api/protected/hognswap/like', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + token,
+        },
+        credentials: 'include',
+        body: JSON.stringify({ itemId: item.id }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Response from server: ', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    setItems(prevItems => prevItems.filter(prevItem => prevItem.id !== item.id));
   };
 
   const onCardLeftScreen = (item) => {
-    // Handle when card leaves the screen
     console.log('Card left the screen:', item);
+    delete cardRefs.current[item.id];
+  };
+
+  const onSwipeButtonClick = (direction) => {
+    const firstItem = items[0];
+    if (firstItem) {
+      cardRefs.current[firstItem.id].swipe(direction);
+    }
   };
 
   return (
@@ -38,23 +92,24 @@ const Swiper = () => {
       <div className="swiper">
         {items.map((item, index) => (
           <TinderCard
+            ref={(card) => (cardRefs.current[item.id] = card)}
             key={item.id}
             className="swipe-card"
             onSwipe={(dir) => onSwipe(dir, item)}
             onCardLeftScreen={() => onCardLeftScreen(item)}
             preventSwipe={['up', 'down']}
           >
-            {/* Render item content here */}
-            <div
-              className="card"
-              style={{ zIndex: items.length - index }}
-            >
+            <div className="card">
               <img src={item.image} alt={item.title} />
               <h3>{item.title}</h3>
               <p>{item.description}</p>
             </div>
           </TinderCard>
         ))}
+      </div>
+      <div className="buttons-container">
+        <button onClick={() => items[0] && onSwipeButtonClick('left')} className="swipe-button">Swipe Left</button>
+        <button onClick={() => items[0] && onSwipeButtonClick('right')} className="swipe-button">Swipe Right</button>
       </div>
     </div>
   );

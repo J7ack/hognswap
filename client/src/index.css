@@ -171,36 +171,68 @@ code {
 
 /* Swiper Styles */
 
-.swiper-container {
+.container {
   position: relative;
-  width: 100%;
-  height: 500px; /* Set the desired height */
+  max-width: 600px;
+  height: 600px; /* Adjust this to suit your cards size */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #1f1053;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide the cards when they are swiped out of the container */
 }
 
-.swiper-card {
+.swiper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1em;
+}
+
+.swipe-card {
   position: absolute;
   width: 80%;
   max-width: 400px; /* Set the desired card width */
+  height: 80%; /* This makes the cards smaller than the swiper area */
   background-color: #ffffff;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-bottom: 20px;
-  transform: translateX(-50%);
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.swipe-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.swipe-button:hover {
+  background-color: #0056b3;
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
-  z-index: 1;
+  width: 100%;
+  height: 100%;
 }
 
 .card img {
@@ -221,3 +253,6 @@ code {
   color: #888888;
 }
 
+.swipe-card:not(:first-child) {
+  display: none;
+}

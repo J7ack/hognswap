@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const ItemForm = () => {
+  // State
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('');
   const [condition, setCondition] = useState('');
@@ -37,6 +38,25 @@ const ItemForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Get token from cookie
+    const cookies = document.cookie.split(';');
+    const token = localStorage.getItem('token');
+
+    // Format token
+    for (let i = 0; i < cookies.length; i++) {
+      if (cookies[i].trim().startsWith('token=')) {
+        token = cookies[i].trim().substring(6);
+        break;
+      }
+    }
+
+    // Check for token
+    if (!token) {
+      console.error('Token is not set in cookies');
+      return;
+    }
+
+    // Create new formData object tot pack item info in
     const formData = new FormData();
     formData.append('itemName', itemName);
     formData.append('category', category);
@@ -47,22 +67,17 @@ const ItemForm = () => {
   })
 
     try {
-      // Create the item object to send in the request body
-      const newItem = {
-        itemName,
-        category,
-        condition,
-        tags,
-        // Add pictures array directly to newItem
-        pictures: pictures.map((picture) => picture.name),
-      };
-
       // Send the request to the server
-      const response = await fetch('/api/hognswap/itemInfo', {
+      const response = await fetch('/api/protected/hognswap/itemInfo', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
+        headers: {
+          'Authorization': "Bearer " + token,
+        }
       });
 
+      // Pog
       if (response.ok) {
         console.log('Item successfully added');
 
@@ -75,6 +90,7 @@ const ItemForm = () => {
       } else {
         console.error('Item submission failed');
       }
+      // Catch error
     } catch (error) {
       console.error('Error adding item: ', error);
     }

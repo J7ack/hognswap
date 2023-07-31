@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext';
+
 
 const Login = () => {
+  // Initialize useHistory hook
+  const navigate = useNavigate();
+
+  // Form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loginMessage, setLoginMessage] = useState('');
 
+  // Form statechange handlers
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -14,6 +22,10 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
+  // Authentication
+  const { setIsAuthenticated, login } = useContext(AuthContext);
+
+  // Handle submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -25,7 +37,7 @@ const Login = () => {
 
     try {
       // Send login request
-      const response = await fetch('/api/hognswap/login', {
+      const res = await fetch('/api/hognswap/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,17 +45,29 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        const token = data.token;       
+      const response = await res.json();
+      console.log('Response from server: ', response);
 
+      if (res.status === 200 || response.message === 'Login success!') {
         // Login Success Message
-        setLoginMessage('HOG IS READY TO SWAP!');
+        setLoginMessage("HOG IS READY TO SWAP!");
+
+        localStorage.setItem('token', response.token);
 
         // Reset form fields
         setEmail('');
         setPassword('');
         setError('');
+
+        // Authenticate
+        setIsAuthenticated(true);
+        
+        // Set the user email
+        login(email);
+
+        // Navigate to homepage after successful login
+        navigate('/');
+        
       } else {
         setError('Invalid email or password');
       }

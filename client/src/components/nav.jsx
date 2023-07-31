@@ -1,9 +1,14 @@
+import { useContext } from "react";
+import { AuthContext } from "../App";
 import React from "react";
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCogs, faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
  
 function NavBar() {
+  // Get user email from context
+  const { userEmail } = useContext(AuthContext);
+
   return (
     <div className="nav">
       <ul>
@@ -23,6 +28,7 @@ function NavBar() {
           </NavLink>
         </li>
       </ul>
+      {userEmail && <div className="user-info">Logged in as: {userEmail}</div> }
     </div>
   );
 }
