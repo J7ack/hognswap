@@ -23,6 +23,9 @@ const itemSchema = new mongoose.Schema({
     type: String,
   }],
   likes: { type: [String], default: [] },
+  userEmail: {
+    type: String,
+  },
 }, {collection: 'itemInfo'});
 
 const Item = mongoose.model('Item', itemSchema);

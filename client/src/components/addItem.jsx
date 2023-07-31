@@ -45,7 +45,7 @@ const ItemForm = () => {
     // Format token
     for (let i = 0; i < cookies.length; i++) {
       if (cookies[i].trim().startsWith('token=')) {
-        token = cookies[i].trim().substring(6);
+        let token = cookies[i].trim().substring(6);
         break;
       }
     }
@@ -99,68 +99,82 @@ const ItemForm = () => {
 
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Item Name:
-        <input type='text' value={itemName} onChange={handleNameChange} />
-      </label>
-      <br />
-      <label>
-        Category:
-        <select value={category} onChange={handleCategoryChange}>
-          <option value="">Select a category of item</option>
-          <option value="appliance">Appliance</option>
-          <option value="collectible">Collectible</option>
-          <option value="Clothing">Clothing</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        Condition:
-        <select value={condition} onChange={handleConditionChange}>
-          <option value="">Select a condition</option>
-          <option value="great">Great</option>
-          <option value="fair">Fair</option>
-          <option value="poor">Poor</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        Tags:
-        <br />
-        <input
-          type="checkbox"
-          value="unopened product"
-          checked={tags.includes('unopened product')}
-          onChange={handleTagsChange}
-        />
-        <span>Unopened Product</span>
-        <br />
-        <input
-          type="checkbox"
-          value="kitchen"
-          checked={tags.includes('kitchen')}
-          onChange={handleTagsChange}
-        />
-        <span>Kitchen</span>
-        <br />
-        <input
-          type="checkbox"
-          value="outside"
-          checked={tags.includes('outside')}
-          onChange={handleTagsChange}
-        />
-        <span>Outside</span>
-      </label>
-      <br />
-      <label>
-        Pictures:
-        <input type="file" multiple onChange={handlePicturesChange} />
-      </label>
-      <br></br>
-      <button type="submit">Submit</button>
+    <form className="item-form" onSubmit={handleSubmit}>
+      <div className="item-form-group">
+        <label className="item-form-label">
+          Item Name:
+          <input className="item-form-input" type='text' value={itemName} onChange={handleNameChange} />
+        </label>
+      </div>
+      <div className="item-form-group">
+        <label className="item-form-label">
+          Category:
+          <select className="item-form-select" value={category} onChange={handleCategoryChange}>
+            <option value="">Select a category of item</option>
+            <option value="appliance">Appliance</option>
+            <option value="collectible">Collectible</option>
+            <option value="Clothing">Clothing</option>
+          </select>
+        </label>
+      </div>
+      <div className="item-form-group">
+        <label className="item-form-label">
+          Condition:
+          <select className="item-form-select" value={condition} onChange={handleConditionChange}>
+            <option value="">Select a condition</option>
+            <option value="great">Great</option>
+            <option value="fair">Fair</option>
+            <option value="poor">Poor</option>
+          </select>
+        </label>
+      </div>
+      <div className="item-form-group">
+        <label className="item-form-label">
+          Tags:
+          <div className="item-form-checkbox-label">
+            <input
+              className="item-form-checkbox"
+              type="checkbox"
+              value="unopened product"
+              checked={tags.includes('unopened product')}
+              onChange={handleTagsChange}
+            />
+            <span>Unopened Product</span>
+          </div>
+          <div className="item-form-checkbox-label">
+            <input
+              className="item-form-checkbox"
+              type="checkbox"
+              value="kitchen"
+              checked={tags.includes('kitchen')}
+              onChange={handleTagsChange}
+            />
+            <span>Kitchen</span>
+          </div>
+          <div className="item-form-checkbox-label">
+            <input
+              className="item-form-checkbox"
+              type="checkbox"
+              value="outside"
+              checked={tags.includes('outside')}
+              onChange={handleTagsChange}
+            />
+            <span>Outside</span>
+          </div>
+        </label>
+      </div>
+      <div className="item-form-group">
+        <label className="item-form-label">
+          Pictures:
+          <input type="file" multiple onChange={handlePicturesChange} />
+        </label>
+      </div>
+      <div className="item-form-group">
+        <button className="item-form-button" type="submit">Submit</button>
+      </div>
     </form>
   );
+  
 }
 
 export default ItemForm;

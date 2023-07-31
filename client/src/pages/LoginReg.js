@@ -5,8 +5,11 @@ import RegistrationForm from '../components/registration';
 const LoginReg = () => {
   return (
     <div>
+      <br></br>
       <Login />
+      <br></br>
       <RegistrationForm />
+      <br></br>
     </div>
   );
 };

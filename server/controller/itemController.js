@@ -34,6 +34,24 @@ exports.getAllItems = async (req, res) => {
   }
 }
 
+exports.getUserItems = async (req, res) => {
+  try {
+    const userEmail = req.params.userEmail;
+    const userItems = await Item.find({ userEmail: userEmail });
+
+    if (userItems.length === 0) {
+      return res.status(200).json({ message: 'No items found under this user' });
+    }
+
+    console.log("Returned items: ", userItems);
+    return res.status(200).json(userItems);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'An error occurred while trying to get the user items' });
+  }
+};
+
+
 // Creating/Uploading an item
 exports.addItem = async (req, res) => {
   try {
@@ -74,6 +92,15 @@ exports.addItem = async (req, res) => {
     // Get user ID from token
     const userId = getUserIdFromToken(token);
 
+    // Find the user
+    const user = await User.findById(userId);
+
+    console.log('USER!!!: ', user);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
     // Create a new item with the extracted information
     const newItem = new Item({
       itemName,
@@ -81,7 +108,7 @@ exports.addItem = async (req, res) => {
       condition,
       tags: tagIds,
       pictures: pictures,
-      user: userId,
+      userEmail: user.email,
     });
 
     console.log('New Item: ', newItem);
@@ -113,7 +140,7 @@ exports.likeItem = async (req, res) => {
     // Tests
     console.log('Authorization header:', req.headers['authorization']);
 
-    
+
     const { itemId } = req.body;
 
     token = req.cookies.token;

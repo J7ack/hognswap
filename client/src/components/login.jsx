@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 
-
 const Login = () => {
   // Initialize useHistory hook
   const navigate = useNavigate();
@@ -52,6 +51,7 @@ const Login = () => {
         // Login Success Message
         setLoginMessage("HOG IS READY TO SWAP!");
 
+        // Store the token in local storage
         localStorage.setItem('token', response.token);
 
         // Reset form fields
@@ -62,8 +62,8 @@ const Login = () => {
         // Authenticate
         setIsAuthenticated(true);
         
-        // Set the user email
-        login(email);
+        // Set the user email and token
+        login(email, response.token);  // pass the token here
 
         // Navigate to homepage after successful login
         navigate('/');

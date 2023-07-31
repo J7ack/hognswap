@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import ItemForm from '../components/addItem';
 
 function Profile() {
   return (
     <div>
-      <h2>Profile</h2>
+      <br></br>
+      <ItemForm />
     </div>
   )
 }

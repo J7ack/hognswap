@@ -5,20 +5,31 @@ const port = 8000;
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use(express.json({ limit: 
 '1mb' }));
 
-// Parse cookies
+// Parse cookies  
 app.use(cookieParser());
 
 // Middleware for token to request obj
 app.use((req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.cookies.token || req.headers.authorization;
   console.log('Token received:', token);
-  req.token = token;
+
+  if (token) {
+    try {
+      const decodedToken = jwt.verify(token, 'the_secret_key')
+      req.user = { email: decodedToken.email };
+      console.log('Decoded token: ', decodedToken);
+
+    } catch (error) {
+      console.log('Failed to verify token:', err);
+    }
+  }
   next();
 })
 

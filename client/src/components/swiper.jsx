@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';  // Include useContext
 import TinderCard from 'react-tinder-card';
+import { AuthContext } from '../AuthContext';  // Import the AuthContext
 
 const Swiper = () => {
   const [items, setItems] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const { token } = useContext(AuthContext);  // Use token from context instead of local storage
   const cardRefs = useRef({});
 
   useEffect(() => {
-    const tokenFromLocalStorage = localStorage.getItem('token');
-    setToken(tokenFromLocalStorage);
     fetchItems();
   }, [token]);
 
@@ -88,7 +87,7 @@ const Swiper = () => {
   };
 
   return (
-    <div className="container">
+    <div className="swiper-container">
       <div className="swiper">
         {items.map((item, index) => (
           <TinderCard

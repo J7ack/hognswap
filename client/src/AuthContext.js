@@ -15,8 +15,14 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedToken = sessionStorage.getItem('token')
+    const storedIsAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const storedUserEmail = localStorage.getItem('userEmail');
+    
     setToken(storedToken)
+    setIsAuthenticated(storedIsAuthenticated)
+    setUserEmail(storedUserEmail)
   }, []);
+  
 
   // Define login function
   const login = (email, token) => {
@@ -24,8 +30,9 @@ export const AuthProvider = ({ children }) => {
     setUserEmail(email);
     setToken(token)
     localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userEmail', userEmail);
+    localStorage.setItem('userEmail', email);
     localStorage.setItem('token', token);
+    console.log('login function called. userEmail: ', email, 'token: ', token);
   }
 
   return (
