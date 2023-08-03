@@ -8,8 +8,10 @@
 
 3.	Run the client and the server in two separate windows.
 
-a.	To initialize client and server, open each folder in a terminal window and run the following commands.
+    a.	To initialize client and server, open each folder in a terminal window and run the following commands.
+   
     b.	`npm init`
+    
     c.	`npm install`
 
 4.	The connection URI is: 
@@ -18,9 +20,10 @@ MONGO_URI = "mongodb+srv://hogAdmin:gimmiemyscreen@atlascluster.dqcdq7g.mongodb.
 5.	If Linux based, npm start should just work on the client side. 
 
     a.	If on Windows open package.json in the client side, find scripts: and edit “start” field value to be --> `set PORT=3000 && react-scripts start`,
-    b.	After this change, `npm start` should work on Windows.
 
-6.	For the server use `npm run dev`.
+  	b.	After this change, `npm start` should work on Windows.
+
+7.	For the server use `npm run dev`.
 
 a.	You should see the following output if connected:
 `Server started on port 8000
