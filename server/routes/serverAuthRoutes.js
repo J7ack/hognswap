@@ -5,18 +5,20 @@ const router = express.Router();
 router.use((req, res, next) => {
   // Extract the token from the header
   const authHeader = req.headers['authorization'];
+  let token;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(403).send({ auth: false, message: 'No token provided.' });
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.substring(7);
+  } else {
+    // If no Bearer token, check cookies
+    token = req.cookies.token;
   }
-
-  const token = authHeader.substring(7);
-
-  console.log('Token received:', token)
 
   if (!token) {
     return res.status(403).send({ auth: false, message: 'No token provided.' });
   }
+
+  console.log('Token received:', token)
 
   // If there is a token, verify it
   jwt.verify(token, 'the_secret_key', (err, decoded) => {
