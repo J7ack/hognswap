@@ -25,9 +25,9 @@ MONGO_URI = "mongodb+srv://hogAdmin:gimmiemyscreen@atlascluster.dqcdq7g.mongodb.
 
 7.	For the server use `npm run dev`.
 
-a.	You should see the following output if connected:
-`Server started on port 8000
-Connected to MongoDB`
+    a.	You should see the following output if connected:
+    `Server started on port 8000
+    Connected to MongoDB`
 
 7.	You can register and login into an account once the page comes up. Then you can interact with the swiper/buttons or click on the profile to upload your own pictures.
 
