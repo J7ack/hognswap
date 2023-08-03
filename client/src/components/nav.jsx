@@ -4,6 +4,7 @@ import React from "react";
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCogs, faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
+import logo from '../photos/logo.jpg';
  
 function NavBar() {
   // Get user email from context
@@ -11,6 +12,7 @@ function NavBar() {
 
   return (
     <div className="nav">
+      <img src={logo} alt="Logo" className="navbar-logo"/>
       <ul>
         <li>
           <NavLink exact to="/settings" activeClass="active">
@@ -28,7 +30,6 @@ function NavBar() {
           </NavLink>
         </li>
       </ul>
-      {userEmail && <div className="user-info">Logged in as: {userEmail}</div> }
     </div>
   );
 }

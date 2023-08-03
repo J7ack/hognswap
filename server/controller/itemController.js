@@ -155,34 +155,26 @@ exports.likeItem = async (req, res) => {
 
     console.log('userId:', userId);
 
-    // Get the user from the database using the userId
+    // Get the user from the database using userId
     const user = await User.findById(userId);
 
-    console.log('User:', user);
-
-    // Check for user
     if (!user) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    // Find item in DB
+    // Check if the item exists in the database
     const item = await Item.findById(itemId);
 
-    console.log('Item:', item);
-
-    // Return item not found
     if (!item) {
-      return res.status(400).json({ error: 'Item not found' });
+      return res.status(404).json({ error: 'Item not found' });
     }
 
-    // Append user's email to 'likes' array
-    if (!item.likes.includes(user.email)) {
-      item.likes.push(user.email);
-      await item.save();
-    }
+    // Add item to user's likedItems
+    user.likedItems.push(item);
+    await user.save();
 
-    return res.status(200).json({ message: 'Item likes successfully' });
-
+    // Respond with success
+    res.status(200).json({ message: 'Item liked successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while trying to like the item' });

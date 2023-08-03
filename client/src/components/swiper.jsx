@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';  // Include useContext
+import React, { useState, useEffect, useRef, useContext } from 'react'; 
 import TinderCard from 'react-tinder-card';
-import { AuthContext } from '../AuthContext';  // Import the AuthContext
+import { AuthContext } from '../AuthContext';  
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faX } from '@fortawesome/free-solid-svg-icons';
+ 
 
 const Swiper = () => {
   const [items, setItems] = useState([]);
@@ -107,8 +110,8 @@ const Swiper = () => {
         ))}
       </div>
       <div className="buttons-container">
-        <button onClick={() => items[0] && onSwipeButtonClick('left')} className="swipe-button">Swipe Left</button>
-        <button onClick={() => items[0] && onSwipeButtonClick('right')} className="swipe-button">Swipe Right</button>
+        <button onClick={() => items[0] && onSwipeButtonClick('left')} className="swipe-button-x"><FontAwesomeIcon icon={faX} /></button>
+        <button onClick={() => items[0] && onSwipeButtonClick('right')} className="swipe-button-heart"><FontAwesomeIcon icon={faHeart} /></button>
       </div>
     </div>
   );

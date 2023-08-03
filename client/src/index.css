@@ -8,6 +8,15 @@ body {
   background-color: #EAE2F8;
 }
 
+.nav {
+  height: 40px;
+}
+
+.navbar-logo {
+  height: 50px;
+  width: auto;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -16,7 +25,7 @@ code {
 .container {
   position: relative;
   max-width: 600px;
-  height: 300px; /* Adjust this to suit your cards size */
+  height: 350px;
   margin: 0 auto;
   padding: 20px;
   background-color: #1f1053;
@@ -26,17 +35,28 @@ code {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Hide the cards when they are swiped out of the container */
+  overflow: hidden;
   flex-wrap: wrap;
 }
 
 .container h2{
   color: #FFDB99;
   text-align: center;
+  margin-bottom: 50px;
+  font-size: 1.75rem;
+}
+
+.container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px; 
 }
 
 .container label {
   color: #FFDB99;
+  margin-bottom: 10px;
   padding: 0px 15px
 }
 
@@ -44,7 +64,13 @@ code {
   color: #FFDB99;
 }
 
+.form-button {
+  margin-top: 30px;
+}
+
+
 /* -------------------------- */
+
 
 /* Card styles */
 .card {
@@ -101,6 +127,7 @@ code {
 .form-label {
   font-weight: bold;
   margin-bottom: 5px;
+  padding: 20px 20px;
 }
 
 .form-input {
@@ -118,6 +145,8 @@ code {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
+  display: block;
+  margin: auto;
 }
 
 .form-button:hover {
@@ -223,7 +252,7 @@ code {
 .swiper-container {
   position: relative;
   max-width: 600px;
-  height: 600px; /* Adjust this to suit your cards size */
+  height: 635px; /* Adjust this to suit your cards size */
   margin: 0 auto;
   padding: 20px;
   background-color: #1f1053;
@@ -267,19 +296,49 @@ code {
   width: 100%;
 }
 
-.swipe-button {
+.swipe-button-x {
   font-size: 18px;
-  padding: 10px 20px;
+  padding: 10px;
   color: #fff;
-  background-color: #007bff;
+  background-color: crimson;
   border: none;
-  border-radius: 5px;
+  border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.swipe-button:hover {
-  background-color: #0056b3;
+.swipe-button-heart {
+  font-size: 18px;
+  padding: 10px;
+  color: #fff;
+  background-color: mediumseagreen;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.swipe-button-heart:hover {
+  transform: scale(1.1);
+  background-color: darkgreen;
+}
+
+.swipe-button-x:hover {
+  transform: scale(1.1);
+  background-color: darkred;
 }
 
 .card {

@@ -1,27 +1,32 @@
-import { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../AuthContext';
+import { useState, useEffect } from 'react';
 
-const useHasPosted = () => {
+function useHasPosted(userEmail, token) {
   const [hasPosted, setHasPosted] = useState(false);
-  const { userEmail, token } = useContext(AuthContext);
-  console.log('userEmail in useHasPosted: ', userEmail, ' token: ', token);
-
-  console.log('userEmail in useHasPosted: ', userEmail)
 
   useEffect(() => {
-    if(userEmail) {
-      fetch(`/api/protected/hognswap/itemInfo/${userEmail}`, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token'),
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => setHasPosted(data.length > 0))
-      .catch(error => console.error('Error: ', error));
-    }
-  }, [userEmail]);
-  
+    console.log('useHasPosted - userEmail: ', userEmail, ' token: ', token);
+
+    fetch(`/api/protected/hognswap/userItems/${userEmail}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`  ,  // Using token from context
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Network response was not ok.");
+      }
+    })
+    .then(data => {
+      console.log('Received data in useHasPosted: ', data);
+      if (data.length > 0) {
+        setHasPosted(true);
+      }
+    })
+    .catch(error => console.error('Error in useHasPosted: ', error));
+}, [userEmail, token]); // Include token as dependency
 
   return hasPosted;
 }
